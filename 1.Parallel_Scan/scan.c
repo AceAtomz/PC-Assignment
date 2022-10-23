@@ -21,6 +21,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int size = 1000;
+int maxsize = 20000;
+int times[20];
+int runs = 5;
+
 void scan(int out[], int in[], int N){
     out[0] = in[0];
 
@@ -30,14 +35,22 @@ void scan(int out[], int in[], int N){
 }
 
 int main(int argc, char *argv[]) {
-    int i, n, low_limit;
-	int *data;
     double start, s_time=0, p_time=0;
     
-    if(argc != 3){
-		printf("Wrong input parameters\nscan.out\n");
+    if(argc != 1){
+		printf("Wrong input parameters\nscan.out\n"); //must specify .out file
 		return 1;
 	}
 
-    //scan();
+    for(int n=size;n<=maxsize;n+=size){
+        srand(n); //sets seed for random generation
+
+        int data[n];
+        for(int i=0; i<n; i++){     //generates sudo-random numbers
+            data[i]=1.1*rand()*5000/RAND_MAX;
+        }
+        
+
+        //scan();
+    }
 }
