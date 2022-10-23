@@ -14,7 +14,7 @@ CFLAGS = -g -Wall
 all: $(E1) $(E2) $(E3)
 
 $(E1): $(P1).c
-	$(C1) $(P1).c -o $(E1)
+	$(C1) $(CFLAGS) $(OMPFLAG) $(P1).c -o $(E1)
 
 $(E2): $(P2).c
 	$(C1) $(CFLAGS) $(OMPFLAG) $(P2).c -o $(E2)
