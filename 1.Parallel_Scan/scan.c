@@ -21,15 +21,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-scan(out[N], in[N]){
-    int i = 0;
+void scan(int out[], int in[], int N){
     out[0] = in[0];
 
-    for(i=1; i<N; i++) {
+    for(int i=1; i<N; i++) {
         out[i] = in[i] + out[i-1];
     }
 }
 
 int main(int argc, char *argv[]) {
-    scan();
+    int i, n, low_limit;
+	int *data;
+    double start, s_time=0, p_time=0;
+    
+    if(argc != 3){
+		printf("Wrong input parameters\nscan.out\n");
+		return 1;
+	}
+
+    //scan();
 }
