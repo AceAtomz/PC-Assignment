@@ -1,13 +1,13 @@
-/* File:     scan_omp.c
+/* File:     scan_mpi.c
  * Purpose:  Parallel implementation of the Prefix Sum operation (Blelloch 1990)
- *           implemented with OpenMP
+ *           implemented with MPI
  *
  * Input:    
  * Output:   If the scan was validated or not.
  *           scan.out holds average times for plotting
  *
- * Compile:  gcc -g -Wall -fopen scan_omp.c -o scan_omp
- * Run:      ./scan_omp
+ * Compile:  gcc -g -Wall scan_mpi.c -o scan_mpi -lm
+ * Run:      mpiexec -n 4 ./scan_mpi
  *
  * Algorithm:
  *    1.  Given a set of elements [a0,a1,··· ,an−1].

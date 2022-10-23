@@ -14,5 +14,5 @@ if __name__ == '__main__':
     plt.ylabel('Time taken (ms)')
     plt.title('Comparison of Prefix Sum Procedures')
     plt.legend()
-    plt.savefig('scan_mpi_comparison.png')
+    plt.savefig('scan_comparison.png')
     plt.show()
