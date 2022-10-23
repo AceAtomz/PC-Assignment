@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 if __name__ == '__main__':
 
     filepath = './scan.out'
-    names = ["Serial", "OpenMP T2", "OpenMP T4", "OpenMP T6"]   #"MPI"
+    names = ["Serial", "OpenMP T4", "MPI T4"]
     x = list(range(1000, 50001, 1000))  # this is the range of input sizes tested
     with open(filepath, 'r') as file:
         for i, line in enumerate(file):
@@ -14,5 +14,5 @@ if __name__ == '__main__':
     plt.ylabel('Time taken (ms)')
     plt.title('Comparison of Prefix Sum Procedures')
     plt.legend()
-    plt.savefig('scan_omp_comparison.png')
+    plt.savefig('scan_mpi_comparison.png')
     plt.show()
