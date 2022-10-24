@@ -128,7 +128,7 @@ int main(int argc, char *argv[]) {
 int find_sum(int* numbers, size_t mysize){
   int sum = 0;
   for (size_t i = 0; i < mysize; i++) {
-    sum += numbers[i];
+    sum += numbers[i];  
   }
   return sum;
 }
@@ -242,7 +242,7 @@ void start_find_psum(int rank, int mysize, int* in,
                     size_t num_per_proc, int sum){
   int psum;
   int level;
-  MPI_Status status;
+  MPI_Status status;  
 
   if (rank == 0) {
     psum = sum;
@@ -293,7 +293,7 @@ void start_find_psum(int rank, int mysize, int* in,
     MPI_Barrier(MPI_COMM_WORLD);
   }
 
-  // put the prefix sums associated with this node in random_numbers
+  // put the prefix sums associated with this node in in
   int next_sum = in[num_per_proc-1];
   in[num_per_proc-1] = psum;
 

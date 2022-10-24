@@ -1,0 +1,53 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: report_2128358.aux
+Reallocating 'name_of_file' (item size: 1) to 15 items.
+The style file: elsarticle-num.bst
+Reallocating 'name_of_file' (item size: 1) to 5 items.
+Database file #1: main.bib
+Warning--empty year in PrefixSumArray
+Warning--empty year in Prefixsumwiki
+Warning--empty year in PrefixsumCSE
+Warning--empty year in PrefixsumMPI
+You've used 4 entries,
+            2952 wiz_defined-function locations,
+            686 strings with 5762 characters,
+and the built_in function-call counts, 714 in all, are:
+= -- 60
+> -- 4
+< -- 0
++ -- 4
+- -- 0
+* -- 26
+:= -- 81
+add.period$ -- 4
+call.type$ -- 4
+change.case$ -- 8
+chr.to.int$ -- 0
+cite$ -- 8
+duplicate$ -- 28
+empty$ -- 105
+format.name$ -- 0
+if$ -- 201
+int.to.chr$ -- 0
+int.to.str$ -- 4
+missing$ -- 0
+newline$ -- 20
+num.names$ -- 0
+pop$ -- 40
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 64
+stack$ -- 0
+substring$ -- 8
+swap$ -- 0
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 4
+while$ -- 0
+width$ -- 5
+write$ -- 35
+(There were 4 warnings)
