@@ -6,18 +6,18 @@
   \def\href#1#2{#2} \def\path#1{#1}\fi
 
 \bibitem{PrefixSumArray}
-{Prefix Sum Array} - implementation and applications in competitive
+{Prefix Sum Array} | implementation and applications in competitive
   programming,
   \url{https://www.geeksforgeeks.org/prefix-sum-array-implementation-applications-competitive-programming/},
   accessed: 23-10-2022.
 
 \bibitem{Prefixsumwiki}
-{Prefix Sum} - algorithm 2: Work-efficient,
+{Prefix Sum} | algorithm 2: Work-efficient,
   \url{https://en.wikipedia.org/wiki/Prefix_sum}, accessed: 23-10-2022.
 
 \bibitem{PrefixsumCSE}
 {CSE 231 Introduction to Parallel and Concurrent Programming at Washington
-  University} - scan,
+  University} | scan,
   \url{https://classes.engineering.wustl.edu/cse231/core/index.php/Scan},
   accessed: 23-10-2022.
 
@@ -25,5 +25,10 @@
 {MPI Parallel Prefix Sum (1A)},
   \url{https://upload.wikimedia.org/wikiversity/en/2/2f/ParaPrefix.MPI.1.A.20140730.pdf},
   accessed: 23-10-2022.
+
+\bibitem{SSSP}
+{Dijkstra’s Shortest Path Algorithm} | greedy algo-7,
+  \url{https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/},
+  accessed: 24-10-2022.
 
 \end{thebibliography}

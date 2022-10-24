@@ -21,6 +21,7 @@
 		\item  Given a set of elements, $[a_0,a_1,\dotsm,a_{n-1}]$, the scan operation associated with addition operator for this input is the output set $[a_0,(a_0+a_1),\dotsm,(a_0+a_1+\dotsm+a_{n-1})]$. 
 		\item For example, the input set is $[2,1,4,0,3,7,6,3]$, then the scan with addition operator of this input is $[2,3,7,7,10,17,23,26]$. 
 	\end{itemize}
+
 	\subsection{Serial Implementation:}
 	Firstly I started off with the baseline implementation of serial scan operation given in Listing~\ref{listing:ls_serial_scan}
 	\begin{lstlisting}[caption={Sequential algorithm for computing scan operation with ‘+’ operator\cite{PrefixSumArray}.}, label={listing:ls_serial_scan}]
@@ -33,7 +34,7 @@
 		}
 	\end{lstlisting}
 	
-	This got me a baseline average time to measure and compare parallel implementations. I ran the operation on arrays ranging in sizes from $1000$ to $50,000$ with intervals of $1000$ given in Figure~\ref{fig:fig_serial_scan}
+	This got me a baseline average time to measure and compare parallel implementations. I ran the operation (10 times, taking average) on arrays ranging in sizes from $1000$ to $50,000$ with intervals of $1000$ given in Figure~\ref{fig:fig_serial_scan}
 	\begin{figure}[!htb]
 		\centering
 		\includegraphics[width=0.6\linewidth]{serial_scan.png}
@@ -295,13 +296,47 @@
 	Not applicable, working alone.
 	
 	\section{Problem 3: Parallel Graph Algorithm}
-	An example figure is given in Figure~\ref{fig:sp_fig1}.
+	Implementing Dijkstra’s Single Source Shortest Path (SSSP) Algorithm. An example problem is given in Figure~\ref{fig:sp_fig1}.
 	\begin{figure}[!htb]
 		\centering
-		\includegraphics[width=0.5\linewidth]{sp_fig1.png}
+		\includegraphics[width=0.3\linewidth]{sp_fig1.png}
 		\caption{A directed graph}\label{fig:sp_fig1}
 	\end{figure}
 	
+	\subsection{Serial Implementation:}
+	Firstly I started off with the baseline implementation of serial SSSP algorithm given in Listing~\ref{listing:ls_serial_sssp}
+	\begin{lstlisting}[caption={Sequential algorithm for Dijkstra’s SSSP\cite{SSSP}.}, label={listing:ls_serial_sssp}]
+		int* dijkstra(int **graph, int src){
+			int* dist = (int*)malloc(V * sizeof(int));
+			bool sptSet[V]; 
+
+			for (int i = 0; i < V; i++) dist[i] = INT_MAX, sptSet[i] = false;
+			dist[src] = 0;
+			
+			// Find shortest path for all vertices
+			for (int count = 0; count < V - 1; count++) {
+				int u = minDistance(dist, sptSet);
+				sptSet[u] = true;
+
+				for (int v = 0; v < V; v++)
+					if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX
+					&& dist[u] + graph[u][v] < dist[v])
+					dist[v] = dist[u] + graph[u][v];
+			}
+			return dist;
+		}
+	\end{lstlisting}
+	
+	This got me a baseline average time to measure and compare parallel implementations. I ran the algorithm on the given graphs (15 times, taking average) with number of vertices ranging from $6$ to $512$ given in Figure~\ref{fig:fig_serial_sssp}
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=0.6\linewidth]{serial_sssp.png}
+		\caption{Serial SSSP algorithm average times}
+		\label{fig:fig_serial_sssp}
+	\end{figure}
+
+	\newpage
+	\subsection{Conclusions:}
 	An example of table is given Table~\ref{tab:example}.
 	\begin{table}[!htb]
 		\centering

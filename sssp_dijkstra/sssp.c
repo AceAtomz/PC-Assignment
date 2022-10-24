@@ -27,18 +27,82 @@
 #define n_times 8
 #define runs 15
 double times[n_times];
-FILE *fptr;
-int V=0;
+FILE *fptr, *fptr2;
+int V=0, n;
 
-int minDistance(int dist[], bool sptSet[]);
-void dijkstra(int** graph, int src);
+int minDistance(int *dist, bool sptSet[]);
+int* dijkstra(int** graph, int src);
 
 // A utility function to print the constructed distance array
-void printSolution(int dist[])
-{   
-    printf("The distance from 0 to each vertex is:\nv \t dist 0->v\n");
-    for (int i = 1; i < V; i++)
-        printf("%d \t %d\n", i, dist[i]);
+void printSolution(int dist[]){   
+    char* currN = malloc(2);
+    snprintf(currN, 2, "%d", n);
+    char* fileName = malloc(50);
+    strcpy(fileName, "./input_graphs/graph_");
+    strcat(fileName, currN);
+    strcat(fileName, ".out");
+    free(currN);
+
+    fptr = fopen(fileName,"w");
+    free(fileName);
+    if(fptr == NULL){
+        printf("Error writing dist");
+        exit(1);
+    }
+
+    for(int i=1;i<V;i++){
+        fprintf(fptr,"%d %d", i, dist[i]); //print to file
+        if(i!=V-1) fprintf(fptr,"\n");
+    }
+    fclose(fptr);
+}
+
+void validate_Dijkstra(){
+    char line[MAX_LINE_LENGTH], line2[MAX_LINE_LENGTH];
+
+    char* currN = malloc(2);
+    snprintf(currN, 2, "%d", n);
+
+    char* fileName = malloc(50);
+    char* fileName2 = malloc(50);
+    strcpy(fileName, "./input_graphs/graph_");
+    strcpy(fileName2, "./input_graphs/graph_");
+    strcat(fileName, currN);
+    strcat(fileName2, currN);
+    strcat(fileName, ".out");
+    strcat(fileName2, "_serial.out");
+    free(currN);
+
+    fptr = fopen(fileName,"r");
+    fptr2 = fopen(fileName2,"r");
+    free(fileName);
+    free(fileName2);
+    if(fptr == NULL || fptr2 == NULL){
+        printf("Error validating\n");
+        exit(1);
+    }
+
+    char *throw;
+    while(fgets(line, MAX_LINE_LENGTH, fptr)){
+        fgets(line2, MAX_LINE_LENGTH, fptr2);
+        
+        char * token = strtok(line, " ");
+        int vertex = strtol(token, &throw, 10);
+        token = strtok(NULL, " ");
+        int d = strtol(token, &throw, 10);
+
+        char * token2 = strtok(line2, " ");
+        token2 = strtok(NULL, " ");
+        int vertex2 = strtol(token2, &throw, 10);
+        int d2 = strtol(token2, &throw, 10);
+
+        if(vertex==vertex2 && d!=d2){
+            printf("Validata failed. \n%d \n%d", d, d2);
+        }
+    }
+    printf("Validate passed.\n");
+    fclose(fptr);
+    fclose(fptr2);
 }
 
 void printTimes(){
@@ -55,15 +119,6 @@ void printTimes(){
         if(i!=n_times-1) fprintf(fptr,",");
     }
     fclose(fptr);
-}
-
-void printGrid(int** graph){
-    for(int i=0;i<V;i++){
-        for(int j=0;j<V;j++){
-            printf("%d ", graph[i][j]);
-        }
-        printf("\n");
-    }
 }
 
 int** readGraph(char* fileName){
@@ -106,8 +161,6 @@ int** readGraph(char* fileName){
 }
 
 int main(int argc, char *argv[]) {
-    int times_counter=0;
-
     if(argc>2){
 		printf("Too many input parameters\n graph.txt"); //must not have any parameters
 		return 1;
@@ -115,11 +168,10 @@ int main(int argc, char *argv[]) {
 
     if(argc==2){ //if graph provided as input
         int **graph = readGraph(argv[1]);
-        printGrid(graph);
-        return 0;
+        dijkstra(graph, 0); //performs the dijkstra sssp operation
     }
     else{ //if no input provided, run through example graphs
-        for(int n=0;n<n_times;n++){
+        for(n=0;n<n_times;n++){
             double total_time=0, average_time=0;
             
             char* currN = malloc(2);
@@ -131,23 +183,24 @@ int main(int argc, char *argv[]) {
             free(currN);
 
             int **graph = readGraph(fileName);
+            int *dist = (int*)malloc(V * sizeof(int));
             free(fileName);
     
             //time the scan operation
             for(int i=0;i<runs;i++){
                 double start_time=omp_get_wtime(); //get start time
                 
-                dijkstra(graph, 0); //performs the dijkstra sssp operation
+                dist = dijkstra(graph, 0); //performs the dijkstra sssp operation
 
                 double finish_time=omp_get_wtime(); //get finish time
                 total_time+= finish_time-start_time;    //add to total running time
             }
             average_time = total_time / runs;   //calc average time of algorithm
-            times[times_counter] = average_time; //store average times
+            times[n] = average_time; //store average times
             
-            //if(n==maxsize) validate_scan(n, outData); //validate that the prefix sum works correctly
+            printSolution(dist);
+            validate_Dijkstra(); //validate that the prefix sum works correctly
             free(graph);
-            times_counter++;
         }
         printTimes();
     }
@@ -157,7 +210,7 @@ int main(int argc, char *argv[]) {
 // A utility function to find the vertex with minimum
 // distance value, from the set of vertices not yet included
 // in shortest path tree
-int minDistance(int dist[], bool sptSet[]){
+int minDistance(int *dist, bool sptSet[]){
     // Initialize min value
     int min = INT_MAX, min_index;
  
@@ -171,8 +224,8 @@ int minDistance(int dist[], bool sptSet[]){
 // Function that implements Dijkstra's single source
 // shortest path algorithm for a graph represented using
 // adjacency matrix representation
-void dijkstra(int **graph, int src){
-    int dist[V]; // The output array.  dist[i] will hold the
+int* dijkstra(int **graph, int src){
+    int* dist = (int*)malloc(V * sizeof(int));; // The output array.  dist[i] will hold the
                  // shortest
     // distance from src to i
  
@@ -214,5 +267,5 @@ void dijkstra(int **graph, int src){
     }
  
     // print the constructed distance array
-    printSolution(dist);
+    return dist;
 }
