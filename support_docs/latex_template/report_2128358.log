@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.10.23)  24 OCT 2022 17:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.10.23)  24 OCT 2022 20:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1257,7 +1257,7 @@ Package pdftex.def Info: ./pics//scan_comparison.png  used on input line 289.
 <./pics//sp_fig1.png, id=269, 943.525pt x 473.77pt>
 File: ./pics//sp_fig1.png Graphic file (type png)
 <use ./pics//sp_fig1.png>
-Package pdftex.def Info: ./pics//sp_fig1.png  used on input line 302.
+Package pdftex.def Info: ./pics//sp_fig1.png  used on input line 301.
 (pdftex.def)             Requested size: 239.00319pt x 120.01093pt.
  [9 <./pics//scan_comparison.png>] (report_2128358.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 9--13
@@ -1276,10 +1276,10 @@ Package rerunfilecheck Info: File `report_2128358.out' has not changed.
 (rerunfilecheck)             Checksum: 09A3FC31C0A61185D2ABA8C4F5260A7B;1437.
  ) ) 
 Here is how much of TeX's memory you used:
- 28011 strings out of 475385
- 519195 string characters out of 2777378
+ 28009 strings out of 475385
+ 519170 string characters out of 2777378
  1220186 words of memory out of 3000000
- 48653 multiletter control sequences out of 15000+600000
+ 48651 multiletter control sequences out of 15000+600000
  529328 words of font info for 131 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,16n,89p,496b,1982s stack positions out of 10000i,1000n,20000p,200000b,80000s
@@ -1293,7 +1293,7 @@ s/cm/cmmi10.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public
 ts/type1/urw/times/utmb8a.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/font
 s/type1/urw/times/utmr8a.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts
 /type1/urw/times/utmri8a.pfb>
-Output written on report_2128358.pdf (10 pages, 444065 bytes).
+Output written on report_2128358.pdf (10 pages, 442661 bytes).
 PDF statistics:
  475 PDF objects out of 1000 (max. 8388607)
  184 named destinations out of 1000 (max. 500000)
