@@ -273,11 +273,24 @@
 	\end{figure}
 
 	\subsection{Validation:}
+	Checking if elements are correclty summed, through running $run.sh$ given in Figure~\ref{fig:fig_validation}
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=0.5\linewidth]{validation.png}
+		\caption{Validation of scan operations}
+		\label{fig:fig_validation}
+	\end{figure}
 
 	\subsection{Conclusions:}
+	After comparing the results from serial, optimal OpenMP (with 4 threads) and optimal MPI (with 4 threads), I can make the conclusion that serial performs the best at very small array size n. While at large n, both OpenMP and MPI have significant speedup from serial, OpenMP performs consistently better than MPI.
+	Comparisons given in Figure~\ref{fig:fig_scan_comparison}
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=0.6\linewidth]{scan_comparison.png}
+		\caption{Comparison of all scan operations}
+		\label{fig:fig_scan_comparison}
+	\end{figure}
 
-
-	\newpage
 	\section{Problem 2: Parallel Bitonic Sort}
 	The bitonic sort is based on the idea of sorting network. The bitonic sorting algorithm is suitable for parallel processing, especially for GPU sorting. \textbf{However, in this problem, you are requested to implement parallel bitonic sorting of integers using \textbf{OpenMP and MPI}, respectively. }
 	
