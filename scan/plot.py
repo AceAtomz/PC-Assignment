@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
     plt.xlabel('Input size')
     plt.ylabel('Time taken (ms)')
-    plt.title('Comparison of Prefix Sum Procedures')
+    plt.title('Serial implementation of Prefix Sum operation')
     plt.legend()
-    plt.savefig('scan_comparison.png')
+    plt.savefig('serial_scan.png')
     plt.show()
