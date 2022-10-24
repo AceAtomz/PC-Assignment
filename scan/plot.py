@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
 
-    filepath = './scan.out'
+    filepath = './scan/scan.out'
     names = ["Serial", "OpenMP T4", "MPI T4"]
     x = list(range(1000, 50001, 1000))  # this is the range of input sizes tested
     with open(filepath, 'r') as file:
