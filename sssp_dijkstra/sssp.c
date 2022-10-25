@@ -97,7 +97,7 @@ void validate_Dijkstra(){
         int d2 = strtol(token2, &throw, 10);
 
         if(vertex==vertex2 && d!=d2){
-            printf("Validata failed. \n%d \n%d", d, d2);
+            printf("Validata failed. \nReturned: %d\nShould be: %d", d, d2);
         }
     }
     printf("Validate passed.\n");
@@ -241,7 +241,7 @@ int* dijkstra(int **graph, int src){
  
     // Distance of source vertex from itself is always 0
     dist[src] = 0;
- 
+
     // Find shortest path for all vertices
     for (int count = 0; count < V - 1; count++) {
         // Pick the minimum distance vertex from the set of
