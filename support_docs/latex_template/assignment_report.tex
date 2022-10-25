@@ -274,12 +274,12 @@
 	\end{figure}
 
 	\subsection{Validation:}
-	Checking if elements are correclty summed, through running $run.sh$ given in Figure~\ref{fig:fig_validation}
+	Checking if elements are correclty summed, through running $run.sh$ given in Figure~\ref{fig:fig_scan_validation}
 	\begin{figure}[!htb]
 		\centering
-		\includegraphics[width=0.5\linewidth]{validation.png}
+		\includegraphics[width=0.5\linewidth]{scan_validation.png}
 		\caption{Validation of scan operations}
-		\label{fig:fig_validation}
+		\label{fig:fig_scan_validation}
 	\end{figure}
 
 	\subsection{Conclusions:}
@@ -459,7 +459,16 @@
 	
 	\newpage
 	\subsection{Conclusions:}
-	An example of table is given Table~\ref{tab:example}.
+	After comparing the results from serial, optimal OpenMP (with 4 threads) and optimal MPI (with 4 threads), I can make the conclusion that serial performs the best at very small array size n. While at large n, both OpenMP and MPI have significant speedup from serial, OpenMP performs consistently better than MPI.
+	Comparisons given in Figure~\ref{fig:fig_scan_comparison}
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=0.6\linewidth]{scan_comparison.png}
+		\caption{Comparison of all scan operations}
+		\label{fig:fig_scan_comparison}
+	\end{figure}
+
+	The speedup is given in Table~\ref{tab:example}.
 	\begin{table}[!htb]
 		\centering
 		\caption{An example of a table}\label{tab:example}

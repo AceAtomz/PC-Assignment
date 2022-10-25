@@ -1,13 +1,13 @@
 echo
-echo ---------Serial scan is starting----------
+echo ---------Serial SSSP is starting----------
 ./sssp
-echo ---------Serial scan is done--------------
+echo ---------Serial SSSP is done--------------
 echo
-echo ---------OpenMP scan is starting----------
+echo ---------OpenMP SSSP is starting----------
 ./sssp_omp
-echo ---------OpenMP scan is done--------------
+echo ---------OpenMP SSSP is done--------------
 echo
-echo ---------MPI scan is starting-------------
+echo ---------MPI SSSP is starting-------------
 mpiexec -n 3 ./sssp_mpi
-echo ---------MPI scan is done-----------------
+echo ---------MPI SSSP is done-----------------
 echo
