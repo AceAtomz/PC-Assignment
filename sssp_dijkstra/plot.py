@@ -14,5 +14,5 @@ if __name__ == '__main__':
     plt.ylabel('Time taken (ms)')
     plt.title('Comparison of Dijkstras SSSP algorithm')
     plt.legend()
-    plt.savefig('./support_docs/latex_template/pics/sssp_comparison.png')
+    plt.savefig('./sssp_dijkstra/sssp_comparison.png')
     plt.show()
