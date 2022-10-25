@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.10.23)  25 OCT 2022 21:16
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.10.23)  26 OCT 2022 00:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1207,12 +1207,12 @@ File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10> not available
 (Font)              Font shape `T1/cmtt/m/n' tried instead on input line 28.
-<./pics//serial_scan.png, id=53, 462.528pt x 346.896pt>
+<./pics//serial_scan.png, id=61, 462.528pt x 346.896pt>
 File: ./pics//serial_scan.png Graphic file (type png)
 <use ./pics//serial_scan.png>
 Package pdftex.def Info: ./pics//serial_scan.png  used on input line 40.
 (pdftex.def)             Requested size: 286.80673pt x 215.11563pt.
-<pics/witslogo_h.png, id=55, 1030.85126pt x 640.3925pt>
+<pics/witslogo_h.png, id=63, 1030.85126pt x 640.3925pt>
 File: pics/witslogo_h.png Graphic file (type png)
 <use pics/witslogo_h.png>
 Package pdftex.def Info: pics/witslogo_h.png  used on input line 45.
@@ -1229,38 +1229,38 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 [1{C:/Users/User/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}
 
  <./pics/witslogo_h.png>] [2 <./pics//serial_scan.png>]
-<./pics//scan_omp_comparison.png, id=112, 462.528pt x 346.896pt>
+<./pics//scan_omp_comparison.png, id=120, 462.528pt x 346.896pt>
 File: ./pics//scan_omp_comparison.png Graphic file (type png)
 <use ./pics//scan_omp_comparison.png>
 Package pdftex.def Info: ./pics//scan_omp_comparison.png  used on input line 10
 8.
 (pdftex.def)             Requested size: 286.80673pt x 215.11563pt.
  [3] [4 <./pics//scan_omp_comparison.png>] [5] [6]
-<./pics//scan_mpi_comparison.png, id=220, 462.528pt x 346.896pt>
+<./pics//scan_mpi_comparison.png, id=228, 462.528pt x 346.896pt>
 File: ./pics//scan_mpi_comparison.png Graphic file (type png)
 <use ./pics//scan_mpi_comparison.png>
 Package pdftex.def Info: ./pics//scan_mpi_comparison.png  used on input line 27
 1.
 (pdftex.def)             Requested size: 286.80673pt x 215.11563pt.
  [7]
-<./pics//scan_validation.png, id=270, 306.39468pt x 170.88844pt>
+<./pics//scan_validation.png, id=278, 306.39468pt x 170.88844pt>
 File: ./pics//scan_validation.png Graphic file (type png)
 <use ./pics//scan_validation.png>
 Package pdftex.def Info: ./pics//scan_validation.png  used on input line 280.
 (pdftex.def)             Requested size: 239.00319pt x 133.30287pt.
-<./pics//scan_comparison.png, id=272, 462.528pt x 346.896pt>
+<./pics//scan_comparison.png, id=280, 462.528pt x 346.896pt>
 File: ./pics//scan_comparison.png Graphic file (type png)
 <use ./pics//scan_comparison.png>
 Package pdftex.def Info: ./pics//scan_comparison.png  used on input line 290.
 (pdftex.def)             Requested size: 286.80673pt x 215.11563pt.
  [8 <./pics//scan_mpi_comparison.png> <./pics//scan_validation.png>]
-<./pics//sp_fig1.png, id=281, 943.525pt x 473.77pt>
+<./pics//sp_fig1.png, id=289, 943.525pt x 473.77pt>
 File: ./pics//sp_fig1.png Graphic file (type png)
 <use ./pics//sp_fig1.png>
 Package pdftex.def Info: ./pics//sp_fig1.png  used on input line 302.
 (pdftex.def)             Requested size: 143.40337pt x 72.00221pt.
  [9 <./pics//scan_comparison.png> <./pics//sp_fig1.png>]
-<./pics//serial_sssp.png, id=292, 462.528pt x 346.896pt>
+<./pics//serial_sssp.png, id=300, 462.528pt x 346.896pt>
 File: ./pics//serial_sssp.png Graphic file (type png)
 <use ./pics//serial_sssp.png>
 Package pdftex.def Info: ./pics//serial_sssp.png  used on input line 333.
@@ -1335,26 +1335,45 @@ LaTeX Warning: Command \textunderscore invalid in math mode on input line 443.
 
 LaTeX Warning: Command \textunderscore invalid in math mode on input line 443.
 
-<./pics//sssp_omp.png, id=416, 462.528pt x 346.896pt>
+<./pics//sssp_omp.png, id=424, 462.528pt x 346.896pt>
 File: ./pics//sssp_omp.png Graphic file (type png)
 <use ./pics//sssp_omp.png>
 Package pdftex.def Info: ./pics//sssp_omp.png  used on input line 453.
 (pdftex.def)             Requested size: 286.80673pt x 215.11563pt.
-[13] [14 <./pics//sssp_omp.png>] (report_2128358.bbl
+[13] [14 <./pics//sssp_omp.png>] [15] [16]
+<./pics//sssp_mpi.png, id=558, 462.528pt x 346.896pt>
+File: ./pics//sssp_mpi.png Graphic file (type png)
+<use ./pics//sssp_mpi.png>
+Package pdftex.def Info: ./pics//sssp_mpi.png  used on input line 604.
+(pdftex.def)             Requested size: 286.80673pt x 215.11563pt.
+ [17]
+<./pics//sssp_validation.png, id=568, 310.15875pt x 471.26062pt>
+File: ./pics//sssp_validation.png Graphic file (type png)
+<use ./pics//sssp_validation.png>
+Package pdftex.def Info: ./pics//sssp_validation.png  used on input line 616.
+(pdftex.def)             Requested size: 157.2986pt x 239.00319pt.
+<./pics//sssp_comparison.png, id=570, 462.528pt x 346.896pt>
+File: ./pics//sssp_comparison.png Graphic file (type png)
+<use ./pics//sssp_comparison.png>
+Package pdftex.def Info: ./pics//sssp_comparison.png  used on input line 626.
+(pdftex.def)             Requested size: 286.80673pt x 215.11563pt.
+ [18 <./pics//sssp_mpi.png> <./pics//sssp_validation.png>] [19 <./pics//sssp_co
+mparison.png>]
+(report_2128358.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 30--33
 []\T1/ptm/m/n/10 Dijkstra's Short-est Path Al-go-rithm | greedy algo-7, [][]$\T
 1/cmtt/m/n/10 https : / / www . geeksforgeeks . org /
  []
 
-) [15] (report_2128358.aux)
+) [20] (report_2128358.aux)
 Package rerunfilecheck Info: File `report_2128358.out' has not changed.
-(rerunfilecheck)             Checksum: 77A5237E6C0770324E046036EEC7ED88;1944.
+(rerunfilecheck)             Checksum: 645290C38B67FE11302F59CE0A2E35BA;2261.
  ) ) 
 Here is how much of TeX's memory you used:
- 28211 strings out of 475385
- 521995 string characters out of 2777378
- 1298186 words of memory out of 3000000
- 48736 multiletter control sequences out of 15000+600000
+ 28422 strings out of 475385
+ 525252 string characters out of 2777378
+ 1334185 words of memory out of 3000000
+ 48824 multiletter control sequences out of 15000+600000
  530972 words of font info for 132 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,16n,89p,496b,1984s stack positions out of 10000i,1000n,20000p,200000b,80000s
@@ -1368,9 +1387,9 @@ s/cm/cmmi10.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public
 ts/type1/urw/times/utmb8a.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/font
 s/type1/urw/times/utmr8a.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts
 /type1/urw/times/utmri8a.pfb>
-Output written on report_2128358.pdf (15 pages, 534890 bytes).
+Output written on report_2128358.pdf (20 pages, 636697 bytes).
 PDF statistics:
- 666 PDF objects out of 1000 (max. 8388607)
- 299 named destinations out of 1000 (max. 500000)
- 146 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 858 PDF objects out of 1000 (max. 8388607)
+ 419 named destinations out of 1000 (max. 500000)
+ 177 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -285,7 +285,6 @@ void SingleSource(int source, int *wgt, int *lengths, MPI_Comm comm) {
     /* The process that stores the source vertex, marks it as being seen */
     if (source >= firstvtx && source <= lastvtx) {
         marker[source - firstvtx] = 0;
-        //lengths[source] = 0;
     }
 
     /* The main loop of Dijkstra's algorithm */

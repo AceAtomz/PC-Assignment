@@ -34,4 +34,19 @@
 \bibitem{he2021parallelizing}
 M.~He, Parallelizing dijkstra's algorithm (2021).
 
+\bibitem{MPIScatter}
+{MPI Scatter} | (3) man page (version 3.1.6),
+  \url{https://www.open-mpi.org/doc/v3.1/man3/MPI\textunderscore
+  Scatter.3.php}, accessed: 25-10-2022.
+
+\bibitem{MPIAllreduce}
+{MPI Allreduce} | manual pages,
+  \url{https://www.mpich.org/static/docs/v3.3/www3/MPI\textunderscore
+  Allreduce.html}, accessed: 25-10-2022.
+
+\bibitem{MPIGather}
+{MPI Gather} | (3) man page (version 3.1.6),
+  \url{https://www.open-mpi.org/doc/v3.1/man3/MPI\textunderscore Gather.3.php},
+  accessed: 25-10-2022.
+
 \end{thebibliography}

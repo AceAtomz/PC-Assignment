@@ -11,45 +11,48 @@ Warning--empty year in PrefixsumCSE
 Warning--empty year in PrefixsumMPI
 Warning--empty year in SSSP
 Warning--empty journal in he2021parallelizing
-You've used 6 entries,
+Warning--empty year in MPIScatter
+Warning--empty year in MPIAllreduce
+Warning--empty year in MPIGather
+You've used 9 entries,
             2952 wiz_defined-function locations,
-            695 strings with 5997 characters,
-and the built_in function-call counts, 1065 in all, are:
-= -- 90
-> -- 9
+            708 strings with 6432 characters,
+and the built_in function-call counts, 1566 in all, are:
+= -- 135
+> -- 12
 < -- 0
-+ -- 7
++ -- 10
 - -- 1
-* -- 38
-:= -- 122
-add.period$ -- 6
-call.type$ -- 6
-change.case$ -- 11
+* -- 56
+:= -- 164
+add.period$ -- 9
+call.type$ -- 9
+change.case$ -- 17
 chr.to.int$ -- 0
-cite$ -- 12
-duplicate$ -- 42
-empty$ -- 156
+cite$ -- 18
+duplicate$ -- 63
+empty$ -- 234
 format.name$ -- 1
-if$ -- 302
+if$ -- 452
 int.to.chr$ -- 0
-int.to.str$ -- 6
+int.to.str$ -- 9
 missing$ -- 1
-newline$ -- 26
+newline$ -- 35
 num.names$ -- 1
-pop$ -- 57
+pop$ -- 87
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 96
+skip$ -- 144
 stack$ -- 0
-substring$ -- 10
+substring$ -- 16
 swap$ -- 1
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 6
+warning$ -- 9
 while$ -- 1
-width$ -- 7
-write$ -- 49
-(There were 6 warnings)
+width$ -- 10
+write$ -- 70
+(There were 9 warnings)
