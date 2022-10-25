@@ -202,8 +202,6 @@ int main(int argc, char *argv[]) {
             localWeight = (int *)malloc(nlocal*V*sizeof(int));
             localDistance = (int *)malloc(nlocal*sizeof(int));
 
-            
-
             /*prepare send data */
             for(k=0; k<npes; ++k) {
                 for(i=0; i<V;++i) {
@@ -223,12 +221,11 @@ int main(int argc, char *argv[]) {
             SingleSource(0, localWeight, localDistance, MPI_COMM_WORLD);
 
             double finish_time=MPI_Wtime(); //get finish time   
-            
+
             /*collect local distance vector at the source process*/
             MPI_Gather(localDistance, nlocal, MPI_INT, dist, nlocal, MPI_INT, 
             0, MPI_COMM_WORLD);
 
-             
             if (myrank == 0) {
                 total_time+= finish_time-start_time;    //add to total running time
                 free(localWeight);
