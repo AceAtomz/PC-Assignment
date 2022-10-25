@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
     plt.xlabel('Number of Vertices')
     plt.ylabel('Time taken (ms)')
-    plt.title('Serial implementation of Dijkstras SSSP algorithm')
+    plt.title('OpenMP implementation of Dijkstras SSSP algorithm')
     plt.legend()
-    plt.savefig('./support_docs/latex_template/pics/serial_sssp.png')
+    plt.savefig('./support_docs/latex_template/pics/sssp_omp.png')
     plt.show()
