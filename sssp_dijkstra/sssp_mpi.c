@@ -30,7 +30,7 @@ double times[n_times];
 FILE *fptr, *fptr2;
 int V=0, n;
 
-int* dijkstra(int** graph, int src);
+void SingleSource(int source, int *wgt, int *lengths, MPI_Comm comm);
 
 // A utility function to print the constructed distance array
 void printSolution(int dist[]){   
@@ -96,7 +96,10 @@ void validate_Dijkstra(){
         int d2 = strtol(token2, &throw, 10);
 
         if(vertex==vertex2 && d!=d2){
-            printf("Validata failed. \nReturned: %d\nShould be: %d", d, d2);
+            printf("Validata failed. \nReturned: %d\nShould be: %d\nIn graph: %d\n", d, d2, n);
+            fclose(fptr);
+            fclose(fptr2);
+            exit(1);
         }
     }
     printf("Validate passed.\n");
@@ -160,98 +163,156 @@ int** readGraph(char* fileName){
 }
 
 int main(int argc, char *argv[]) {
-    if(argc>2){
-		printf("Too many input parameters\n graph.txt"); //must not have any parameters
+    if(argc!=1){
+		printf("Too many input parameters\n"); //must not have any parameters
 		return 1;
 	}
+     // run through example graphs
+    int npes, myrank, nlocal;
+    int i, j, k;
+    int *localWeight; /*local weight array*/
+    int *localDistance; /*local distance vector*/
 
-    if(argc==2){ //if graph provided as input
-        int **graph = readGraph(argv[1]);
-        dijkstra(graph, 0); //performs the dijkstra sssp operation
-    }
-    else{ //if no input provided, run through example graphs
-        for(n=0;n<n_times;n++){
-            double total_time=0, average_time=0;
-            
-            char* currN = malloc(2);
-            snprintf(currN, 2, "%d", n);
-            char* fileName = malloc(50);
-            strcpy(fileName, "./input_graphs/graph_");
-            strcat(fileName, currN);
-            strcat(fileName, ".txt");
-            free(currN);
+    MPI_Init(&argc, &argv);
+    MPI_Comm_size(MPI_COMM_WORLD, &npes);
+    MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
+    for(n=0;n<n_times;n++){
+        double total_time=0, average_time=0;
+        
+        char* currN = malloc(2);
+        snprintf(currN, 2, "%d", n);
+        char* fileName = malloc(50);
+        strcpy(fileName, "./input_graphs/graph_");
+        strcat(fileName, currN);
+        strcat(fileName, ".txt");
+        if (myrank == 0) free(currN);
 
-            int **graph = readGraph(fileName);
-            int *dist = (int*)malloc(V * sizeof(int));
-            free(fileName);
-    
-            //time the scan operation
-            for(int i=0;i<runs;i++){
-                double start_time=omp_get_wtime(); //get start time
-                
-                dist = dijkstra(graph, 0); //performs the dijkstra sssp operation
+        int **graph = readGraph(fileName); /*adjacency matrix*/
+        if (myrank == 0) free(fileName);
+        int *dist = (int*)malloc(V * sizeof(int)); /*distance vector*/
+        int sendbuf[V*V]; /*local weight to distribute*/
+        
 
-                double finish_time=omp_get_wtime(); //get finish time
-                total_time+= finish_time-start_time;    //add to total running time
+        nlocal = V/npes; /* Compute the number of elements to be stored locally per thread. */
+        //time the scan operation
+        for(int r=0;r<runs;r++){
+            MPI_Barrier(MPI_COMM_WORLD);
+            localWeight = (int *)malloc(nlocal*V*sizeof(int));
+            localDistance = (int *)malloc(nlocal*sizeof(int));
+            double start_time;
+            if (myrank == 0)
+                start_time=MPI_Wtime(); //get start time
+
+            /*prepare send data */
+            for(k=0; k<npes; ++k) {
+                for(i=0; i<V;++i) {
+                    for(j=0; j<nlocal;++j) {
+                        sendbuf[k*V*nlocal+i*nlocal+j]=graph[i][k*nlocal+j];
+                    }
+                }
             }
-            average_time = total_time / runs;   //calc average time of algorithm
-            times[n] = average_time; //store average times
-            
+
+            /*distribute data*/
+            MPI_Scatter(sendbuf, nlocal*V, MPI_INT, localWeight, nlocal*V, MPI_INT,
+            0, MPI_COMM_WORLD); 
+
+            /*Implement the single source dijkstra's algorithm*/
+            SingleSource(0, localWeight, localDistance, MPI_COMM_WORLD);
+
+            /*collect local distance vector at the source process*/
+            MPI_Gather(localDistance, nlocal, MPI_INT, dist, nlocal, MPI_INT, 
+            0, MPI_COMM_WORLD);
+
+            MPI_Barrier(MPI_COMM_WORLD);
+            if (myrank == 0) {
+                double finish_time=MPI_Wtime(); //get finish time
+                total_time+= finish_time-start_time;    //add to total running time
+                free(localWeight);
+                free(localDistance);
+            }
+        }
+        average_time = total_time / runs;   //calc average time of algorithm
+        times[n] = average_time; //store average times
+        
+        if (myrank == 0){
             printSolution(dist);
             validate_Dijkstra(); //validate that the prefix sum works correctly
             free(graph);
-        }
-        printTimes();
+        } 
     }
+    MPI_Finalize();
+    if (myrank == 0) printTimes();
     return 0;
 }
 
 
-// Function that implements Dijkstra's single source
-// shortest path algorithm for a graph represented using
-// adjacency matrix representation
-int* dijkstra(int **graph, int src){
-    int* dist = (int*)malloc(V * sizeof(int));; // The output array.  dist[i] will hold the
-                 // shortest
-    // distance from src to i
- 
-    bool sptSet[V]; // sptSet[i] will be true if vertex i is
-                    // included in shortest
-    // path tree or shortest distance from src to i is
-    // finalized
- 
-    // Initialize all distances as INFINITE and stpSet[] as
-    // false
-    for (int i = 0; i < V; i++)
-        dist[i] = INT_MAX, sptSet[i] = false;
- 
-    // Distance of source vertex from itself is always 0
-    dist[src] = 0;
+/*single source Dijkstra's Algorithm*/
+/* @param source: rank of the root
+ @param wgt: points to locally stored portion of the weight adjacency matrix of the graph;
+ @param lengths: points to a vector that will store the distance of the shortest paths from the
+source to the locally stored vertices;
+*/
+void SingleSource(int source, int *wgt, int *lengths, MPI_Comm comm) {
+    int i, j;
+    int nlocal; /* The number of vertices stored locally */
+    int *marker; /* Used to mark the vertices belonging to Vo */
+    int firstvtx; /* The index number of the first vertex that is stored locally */
+    int lastvtx; /* The index number of the last vertex that is stored locally */
+    int u, udist;
+    int lminpair[2], gminpair[2];
+    int npes, myrank;
 
-    // Find shortest path for all vertices
-    for (int count = 0; count < V - 1; count++) {
-        // Pick the minimum distance vertex from the set of
-        // vertices not yet processed. u is always equal to
-        // src in the first iteration.
-        int u = minDistance(dist, sptSet);
- 
-        // Mark the picked vertex as processed
-        sptSet[u] = true;
- 
-        // Update dist value of the adjacent vertices of the
-        // picked vertex.
-        for (int v = 0; v < V; v++)
- 
-            // Update dist[v] only if is not in sptSet,
-            // there is an edge from u to v, and total
-            // weight of path from src to  v through u is
-            // smaller than current value of dist[v]
-            if (!sptSet[v] && graph[u][v]
-                && dist[u] != INT_MAX
-                && dist[u] + graph[u][v] < dist[v])
-                dist[v] = dist[u] + graph[u][v];
+    MPI_Comm_size(comm, &npes);
+    MPI_Comm_rank(comm, &myrank);
+
+    nlocal = V / npes;
+    firstvtx = myrank*nlocal;
+    lastvtx = firstvtx + nlocal - 1;
+
+    /* Set the initial distances from source to all the other vertices */
+    for (j = 0; j<nlocal; j++) {
+        lengths[j] = wgt[source*nlocal + j];
     }
- 
-    // print the constructed distance array
-    return dist;
+    /* This array is used to indicate if the shortest part to a vertex has been found or not. */
+    /* if marker [v] is one, then the shortest path to v has been found, otherwise it has not. */
+    marker = (int *)malloc(nlocal*sizeof(int));
+    for (j = 0; j<nlocal; j++) {
+        marker[j] = 1;
+    }
+
+    /* The process that stores the source vertex, marks it as being seen */
+    if (source >= firstvtx && source <= lastvtx) {
+        marker[source - firstvtx] = 0;
+        udist[source - firstvtx] = 0;
+    }
+
+    /* The main loop of Dijkstra's algorithm */
+    for (i = 1; i<V; i++) {
+        /* Step 1: Find the local vertex that is at the smallest distance from source */
+        lminpair[0] = INT_MAX; /* set it to an architecture dependent large number */
+        lminpair[1] = -1;
+        for (j = 0; j<nlocal; j++) {
+            if (marker[j] && lengths[j] < lminpair[0]) {
+                lminpair[0] = lengths[j];
+                lminpair[1] = firstvtx + j;
+            }
+        }
+
+        /* Step 2: Compute the global minimum vertex, and insert it into Vc */
+        MPI_Allreduce(lminpair, gminpair, 1, MPI_2INT, MPI_MINLOC, comm);
+        udist = gminpair[0];
+        u = gminpair[1];
+        /* The process that stores the minimum vertex, marks it as being seen */
+        if (u == lminpair[1]) {
+            marker[u - firstvtx] = 0;
+        }
+
+        /* Step 3: Update the distances given that u got inserted */
+        for (j = 0; j<nlocal; j++) {
+            if (marker[j] && ((udist + wgt[u*nlocal + j]) < lengths[j])) {
+                lengths[j] = udist + wgt[u*nlocal + j];
+            }
+        }
+    }
+    if (myrank == 0) free(marker);
 }
