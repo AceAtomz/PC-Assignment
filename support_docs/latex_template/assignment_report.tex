@@ -334,7 +334,129 @@
 		\caption{Serial SSSP algorithm average times}
 		\label{fig:fig_serial_sssp}
 	\end{figure}
+	
+	\subsection{OpenMP Parallel Implementation:}
+	Next I implented the SSSP algorithm within OpenMP's interface. The approach I used is based off Dijkstra's SSSP iterative approach, while finding the minimum distance for each node gets assigned a thread to split the work done\cite{he2021parallelizing} given in Listing~\ref{listing:ls_scan_omp}
+	\begin{lstlisting}[caption={OpenMP Parallel algorithm for computing SSSP\cite{he2021parallelizing}}, label={listing:ls_sssp_omp}]
+		int* dijkstra(int **graph, int src){
+			int* dist = (int*)malloc(V * sizeof(int));
+			dist[src] = 0; // Distance of source vertex from itself is always 0
+			int i, md, mv;
+			int my_first; // The first vertex that stores in one thread locally. 
+			int my_id; // ID for threads
+			int my_last; //The last vertex that stores in one thread locally. 
+			int my_md; // local minimum distance
+			int my_mv; // local minimum vertex
+			int my_step; /* local vertex that is at the minimum distance from the source */
+			int nth; /* number of threads */
+			bool sptSet[V]; // sptSet[i] will be true if vertex i has been visited
+			
+			// Initialize all distances as INFINITE and stpSet[] as false
+			for (i = 0; i < V; i++)
+				dist[i] = INT_MAX, sptSet[i] = false;
+			
+			/* OpenMP parallelization starts here */
+			#pragma omp parallel private ( my_first, my_id, my_last, my_md, my_mv, my_step )\
+			shared ( src, md, dist, mv, nth, graph )
+			{
+				my_id = omp_get_thread_num ( );
+				nth = omp_get_num_threads ( );
+				my_first = (my_id * V) / nth;
+				my_last = ((my_id + 1) * V) / nth - 1;
+				for (my_step = 0; my_step < V-1; my_step++) {
+					#pragma omp single
+					{
+						md = INT_MAX;
+						mv = -1;
+					}
+					int k;
+					my_md = INT_MAX;
+					my_mv = -1;
+					
+					/* Each thread finds the minimum distance unconnected vertex inner of the graph */
+					for (k = my_first; k <= my_last; k++) {
+						if (!sptSet[k] && dist[k] <= my_md) {
+							my_md = dist[k];
+							my_mv = k;
+						}
+					}
+					
+					/* 'critical' specifies that code is only be executed on 
+					* one thread at a time, because we need to determine the 
+					* minimum of all the my_md here. */
+					#pragma omp critical
+					{
+						if (my_md < md) {
+							md = my_md;
+							mv = my_mv;
+						}
+					}
+					
+					/* 'barrier' identifies a synchronization point at which threads in a 
+					* parallel region will wait until all other threads in this section reach 
+					* the same point. So that md and mv have the correct value. */
+					#pragma omp barrier
+					
+					#pragma omp single
+					{
+						/* It means we find the vertex and set its status to true. */
+						if (mv != - 1){
+							sptSet[mv] = true;
+						}
+					}
+					
+					# pragma omp barrier
+					
+					if ( mv != -1 ){
+						int j;
+						for (j = my_first; j <= my_last; j++) {
+							if (!sptSet[j] && graph[mv][j] && dist[mv] != INT_MAX
+							&& dist[mv] + graph[mv][j] < dist[j])
+							dist[j] = dist[mv] + graph[mv][j];
+						}
+					}
+					#pragma omp barrier
+				}
+			}
+			return dist;
+		}
+	\end{lstlisting}
+	
+	\newpage
+	The algorithm works as follows:
+	\begin{itemize}
+		\item Initialize all variables
+		\item Start omp parallel
+		\item Private variables: $my\textunderscore first, my\textunderscore id, my\textunderscore last, my\textunderscore md, my\textunderscore mv, my\textunderscore step$
+		\item Shared variables: $src, md, dist, mv, nth, graph$
+		\item Set: $my\textunderscore id$ to current thread ID; $nth$ to total thread count; $my\textunderscore first$ to $(my\textunderscore id * V) / nth$; and $my\textunderscore last$ to $((my\textunderscore id + 1) * V) / nth - 1$;
+		\item Begin a for loop (from $0$ to $V-1$)
+		\item Begin an omp single contruct, set $md$ to an arbitrarily large number and $mv$ to non-existent $(-1)$
+		\item Now set $my\textunderscore md$ and $my\textunderscore mv$ in the same way
+		\item Begin a for loop from $my\textunderscore first$ to (and including) $my\textunderscore last$ 
+		\item Inside the for loop, check 2 things: if node has been visited and if distance of node ($dist[k]$) is less than local minimum distance ($my\textunderscore md$)
+		\item If true: set $my\textunderscore md = dist[k]$ and $my\textunderscore mv = k$
+		\item Begin an omp critical construct, inside check if $my\textunderscore md < md$. If true: $md = my\textunderscore md$ and $mv = my\textunderscore mv$
+		\item Initiate omp barrier
+		\item Begin an omp single contruct, if $mv$ is not $-1$ then set node $mv$ to visited
+		\item Initiate another omp barrier
+		\item Check if $mv$ is not $-1$ then begin a for loop from $my\textunderscore first$ to (and including) $my\textunderscore last$ 
+		\item Inisde the loop check 3 things: node$[j]$ not visited; cost at $[mv][j]$ and dist$[mv]$ are not the default large number we set; finally if dist$[mv]$ + cost at $[mv][j]$ are less than dist$[j]$
+		\item If all conditions are met, set dist$[j]$ = dist$[mv]$ + cost at $[mv][j]$
+		\item After the for loop initiate omp barrier
+		\item Return the distance array
+	\end{itemize}
+	
+	I experimented with different number of threads running and noticed any number of threads less than 6 produce similar results. While anything over 6 starts to slow down the algorithm rather than speed it up. From this conclusion I chose thread counts of $2,3,4$ to compare, given in Figure~\ref{fig:fig_sssp_omp}
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=0.6\linewidth]{sssp_omp.png}
+		\caption{OpenMP Parallel SSSP algorithm average times for different thread counts}
+		\label{fig:fig_sssp_omp}
+	\end{figure}
 
+	All 3 parallel implementations deviate very slightly from eachother. In parallel speedup is only noticed at around 250 vertices and higher, otherwise serial performs better. With 3 threads running there is a slightly better speedup at higher vertex counts.
+	
 	\newpage
 	\subsection{Conclusions:}
 	An example of table is given Table~\ref{tab:example}.

@@ -214,7 +214,7 @@ int main(int argc, char *argv[]) {
 // shortest path algorithm for a graph represented using
 // adjacency matrix representation
 int* dijkstra(int **graph, int src){
-    int* dist = (int*)malloc(V * sizeof(int));; // The output array.  dist[i] will hold the
+    int* dist = (int*)malloc(V * sizeof(int)); // The output array.  dist[i] will hold the
                                                 // shortest
                                                 // distance from src to i
     int i, md, mv;
