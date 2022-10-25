@@ -108,13 +108,14 @@ void validate_Dijkstra(){
 }
 
 void printTimes(){
-    fptr = fopen("sssp.out","w");
+    fptr = fopen("sssp.out","a");
 
     if(fptr == NULL){
         printf("Error writing times");
         exit(1);
     }
     
+    fprintf(fptr,"\n"); //newline
     for(int i=0;i<n_times;i++){
         times[i] = times[i]*1000;
         fprintf(fptr,"%f",times[i]); //print to file
@@ -141,9 +142,10 @@ int** readGraph(char* fileName){
     for (int i = 0; i < V; i++)
         graph[i] = (int*)malloc(V * sizeof(int));
     
-    for(int i=0;i<V;i++){
+    for(int i=0;i<V;i++){ //initialize all weights to INT_MAX
         for(int j=0;j<V;j++){
-            graph[i][j] =0;
+            graph[i][j] = INT_MAX;
+            if(i==j) graph[i][j] = 0;
         }
     }
 
@@ -174,11 +176,9 @@ int main(int argc, char *argv[]) {
     int *localDistance; /*local distance vector*/
 
     MPI_Init(&argc, &argv);
-    MPI_Comm_size(MPI_COMM_WORLD, &npes);
-    MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
     for(n=0;n<n_times;n++){
         double total_time=0, average_time=0;
-        
+        int *dist;
         char* currN = malloc(2);
         snprintf(currN, 2, "%d", n);
         char* fileName = malloc(50);
@@ -189,19 +189,20 @@ int main(int argc, char *argv[]) {
 
         int **graph = readGraph(fileName); /*adjacency matrix*/
         if (myrank == 0) free(fileName);
-        int *dist = (int*)malloc(V * sizeof(int)); /*distance vector*/
-        int sendbuf[V*V]; /*local weight to distribute*/
         
+        int sendbuf[V*V]; /*local weight to distribute*/
+
+        MPI_Comm_size(MPI_COMM_WORLD, &npes);
+        MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
 
         nlocal = V/npes; /* Compute the number of elements to be stored locally per thread. */
         //time the scan operation
         for(int r=0;r<runs;r++){
-            MPI_Barrier(MPI_COMM_WORLD);
+            dist = (int*)malloc(V * sizeof(int)); /*distance vector*/
             localWeight = (int *)malloc(nlocal*V*sizeof(int));
             localDistance = (int *)malloc(nlocal*sizeof(int));
-            double start_time;
-            if (myrank == 0)
-                start_time=MPI_Wtime(); //get start time
+
+            double start_time=MPI_Wtime(); //get start time
 
             /*prepare send data */
             for(k=0; k<npes; ++k) {
@@ -223,18 +224,18 @@ int main(int argc, char *argv[]) {
             MPI_Gather(localDistance, nlocal, MPI_INT, dist, nlocal, MPI_INT, 
             0, MPI_COMM_WORLD);
 
-            MPI_Barrier(MPI_COMM_WORLD);
+            double finish_time=MPI_Wtime(); //get finish time    
             if (myrank == 0) {
-                double finish_time=MPI_Wtime(); //get finish time
                 total_time+= finish_time-start_time;    //add to total running time
                 free(localWeight);
                 free(localDistance);
+                if(r!=runs-1) free(dist);
             }
         }
-        average_time = total_time / runs;   //calc average time of algorithm
-        times[n] = average_time; //store average times
-        
         if (myrank == 0){
+            average_time = total_time / runs;   //calc average time of algorithm
+            times[n] = average_time; //store average times
+
             printSolution(dist);
             validate_Dijkstra(); //validate that the prefix sum works correctly
             free(graph);
@@ -283,7 +284,7 @@ void SingleSource(int source, int *wgt, int *lengths, MPI_Comm comm) {
     /* The process that stores the source vertex, marks it as being seen */
     if (source >= firstvtx && source <= lastvtx) {
         marker[source - firstvtx] = 0;
-        udist[source - firstvtx] = 0;
+        //lengths[source] = 0;
     }
 
     /* The main loop of Dijkstra's algorithm */
@@ -309,7 +310,8 @@ void SingleSource(int source, int *wgt, int *lengths, MPI_Comm comm) {
 
         /* Step 3: Update the distances given that u got inserted */
         for (j = 0; j<nlocal; j++) {
-            if (marker[j] && ((udist + wgt[u*nlocal + j]) < lengths[j])) {
+            if (marker[j]  && wgt[u*nlocal + j] != INT_MAX && udist != INT_MAX
+                && ((udist + wgt[u*nlocal + j]) < lengths[j])) {
                 lengths[j] = udist + wgt[u*nlocal + j];
             }
         }
