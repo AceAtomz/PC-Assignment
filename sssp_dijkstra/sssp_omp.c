@@ -242,7 +242,7 @@ int* dijkstra(int **graph, int src){
 
     /* OpenMP parallelization starts here */
     #pragma omp parallel private ( my_first, my_id, my_last, my_md, my_mv, my_step )\
-    shared ( src, md, dist, mv, nth, graph ) num_threads(2)
+    shared ( src, md, dist, mv, nth, graph )
     {
         my_id = omp_get_thread_num ( );
         nth = omp_get_num_threads ( );

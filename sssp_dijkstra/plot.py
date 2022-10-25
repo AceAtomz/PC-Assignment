@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 if __name__ == '__main__':
     
     filepath = './sssp_dijkstra/sssp.out'
-    names = ["Serial", "OpenMP T2", "OpenMP T4", "OpenMP T6", "OpenMP T8"]
+    names = ["Serial", "OpenMP T2", "OpenMP T3", "OpenMP T4", "OpenMP T8"]
     x = [6,8,16,64,128,256,384,512]  # this is the range of input sizes tested
     with open(filepath, 'r') as file:
         for i, line in enumerate(file):
