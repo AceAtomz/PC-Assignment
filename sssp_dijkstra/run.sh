@@ -8,6 +8,6 @@ echo ---------OpenMP scan is starting----------
 echo ---------OpenMP scan is done--------------
 echo
 echo ---------MPI scan is starting-------------
-mpiexec -n 4 ./sssp_mpi
+mpiexec -n 3 ./sssp_mpi
 echo ---------MPI scan is done-----------------
 echo

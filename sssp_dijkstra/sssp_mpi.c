@@ -6,7 +6,7 @@
  *           sssp.out holds average times for plotting
  *
  * Compile:  gcc -g -Wall sssp_mpi.c -o sssp_mpi -lm
- * Run:      mpiexec -n 4 ./sssp_mpi
+ * Run:      mpiexec -n 3 ./sssp_mpi
  *
  * Algorithm:
  *    1.  For a weighted graph G = (V,E,w), where: V is the set of vertices,
@@ -202,7 +202,7 @@ int main(int argc, char *argv[]) {
             localWeight = (int *)malloc(nlocal*V*sizeof(int));
             localDistance = (int *)malloc(nlocal*sizeof(int));
 
-            double start_time=MPI_Wtime(); //get start time
+            
 
             /*prepare send data */
             for(k=0; k<npes; ++k) {
@@ -216,15 +216,19 @@ int main(int argc, char *argv[]) {
             /*distribute data*/
             MPI_Scatter(sendbuf, nlocal*V, MPI_INT, localWeight, nlocal*V, MPI_INT,
             0, MPI_COMM_WORLD); 
+            
+            double start_time=MPI_Wtime(); //get start time
 
             /*Implement the single source dijkstra's algorithm*/
             SingleSource(0, localWeight, localDistance, MPI_COMM_WORLD);
 
+            double finish_time=MPI_Wtime(); //get finish time   
+            
             /*collect local distance vector at the source process*/
             MPI_Gather(localDistance, nlocal, MPI_INT, dist, nlocal, MPI_INT, 
             0, MPI_COMM_WORLD);
 
-            double finish_time=MPI_Wtime(); //get finish time    
+             
             if (myrank == 0) {
                 total_time+= finish_time-start_time;    //add to total running time
                 free(localWeight);
