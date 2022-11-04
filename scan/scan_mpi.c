@@ -6,7 +6,7 @@
  * Output:   If the scan was validated or not.
  *           scan.out holds average times for plotting
  *
- * Compile:  gcc -g -Wall scan_mpi.c -o scan_mpi -lm
+ * Compile:  mpicc -g -Wall -o scan_mpi scan_mpi.c -lm
  * Run:      mpiexec -n 4 ./scan_mpi
  *
  * Algorithm:
